@@ -6,9 +6,9 @@
 //   - Feather M0 WiFi -> https://www.adafruit.com/products/3010
 //   - Feather WICED -> https://www.adafruit.com/products/3056
 
-#define WIFI_SSID       "ssid"
-#define WIFI_PASS       "password"
-#define REST_HOST       "yourhost"
+#define WIFI_SSID       "grwb"
+#define WIFI_PASS       "lemonslimes"
+#define REST_HOST       "10.76.1.13"
 #define REST_PORT       3000
 
 #define READING_RATE    300000
