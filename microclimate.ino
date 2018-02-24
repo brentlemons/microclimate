@@ -57,12 +57,18 @@ void setup() {
   // initialize dht22
   dht.begin();
 
+  reportTemperatureAndHumidity();
+
 
 }
 
-int loopPos = 0;
-
 void loop() {
+  
+}
+
+//int loopPos = 0;
+
+void reportTemperatureAndHumidity() {
   // put your main code here, to run repeatedly:
 //  delay(5000);
 
@@ -73,7 +79,7 @@ void loop() {
 //  Serial.println("response: " + response);
   StaticJsonBuffer<200> jsonBuffer;
 
-  if (++loopPos >= 6) {
+//  if (++loopPos >= 6) {
 
     int rawLevel = analogRead(A0);
 
@@ -107,26 +113,9 @@ void loop() {
 
 //    Serial.println(dataLine);
 
-    JsonObject& statusRoot = jsonBuffer.createObject();
-  
-    statusRoot["device"] = DEVICE_NAME;
-    
-    statusRoot["percentage"] = level < 150 ? level : 100;
-    statusRoot["adc"] = rawLevel;
-    statusRoot["realVoltage"] = realVoltage;
-    statusRoot["charging"] = rawLevel > 800 ? 1 : 0;
-  
-    String statusJson;
-    statusRoot.printTo(statusJson);
-  
-    Serial.println(statusJson.c_str());
-    String response = "";
-    client.setHeader("Content-Type: application/json");
-    int statusCode = client.post("/api/status", statusJson.c_str(), &response);
-    Serial.println("statusresponse: " + response);
 
-    loopPos = 0;
-  }
+//    loopPos = 0;
+//  }
 
   // Declare an object of class geeks
   Geeks obj1;
@@ -146,8 +135,26 @@ void loop() {
   root["device"] = DEVICE_NAME;  
   root["temperature"] = event.temperature;
 
+//  JsonObject& statusRoot = jsonBuffer.createObject();
+//
+//  statusRoot["device"] = DEVICE_NAME;
+//  
+  root["percentage"] = level < 150 ? level : 100;
+  root["adc"] = rawLevel;
+  root["realVoltage"] = realVoltage;
+  root["charging"] = rawLevel > 800 ? 1 : 0;
+
+//  String statusJson;
+//  statusRoot.printTo(statusJson);
+//
+//  Serial.println(statusJson.c_str());
+//  String statusResponse = "";
+//  client.setHeader("Content-Type: application/json");
+//  int statusCode = client.post("/api/status", statusJson.c_str(), &statusResponse);
+//  Serial.println("statusresponse: " + statusResponse);
+
   float celsius = event.temperature;
-  float fahrenheit = (celsius * 1.8) + 32;
+  float fahrenheit = (celsius * 1.8) + 32; 
 
   dht.humidity().getEvent(&event);
 
@@ -160,10 +167,22 @@ void loop() {
   Serial.println(jsonStr.c_str());
   String response = "";
   client.setHeader("Content-Type: application/json");
-  int statusCode = client.post("/api/readings", jsonStr.c_str(), &response);
+  int readingCode = client.post("/api/readings", jsonStr.c_str(), &response);
   Serial.println("reading response: " + response);
 
-  delay(READING_RATE);
+  ESP.deepSleep(READING_RATE);
+
+//
+
+
+
+
+
+
+
+
+
+
 
 }
 

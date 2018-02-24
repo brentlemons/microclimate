@@ -11,7 +11,7 @@
 #define REST_HOST       "10.76.1.13"
 #define REST_PORT       3000
 
-#define READING_RATE    300000
+#define READING_RATE    300e6
 #define DEVICE_NAME     "atrium"
 
 // comment out the following two lines if you are using fona or ethernet
